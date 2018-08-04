@@ -5,19 +5,18 @@ var hiddenWord = [];
 var guessesRemaining = 12;
 var guessedAlready = [];
 var loses = 0;
-var randomWord= "";
-
-		
-    
-    
-
+var randomWord = "";
+var possibleGuesses = "abcdefghijklmnopqrstuvwxyz";
 
 
 function launchGame() {
-    
+
     randomWord = mountains[Math.floor(Math.random() * mountains.length)];
     hiddenWord = [];
-    for (i=0; i<randomWord.length; i++) {
+    guessesRemaining = 12;
+    guessedAlready = [];
+
+    for (i = 0; i < randomWord.length; i++) {
         hiddenWord[i] = " _ ";
     }
 
@@ -30,53 +29,56 @@ function launchGame() {
     console.log(randomWord);  //test
 }
 
-function checkUserGuess (userGuess) {
-    console.log(userGuess)
-    // for (var j=0; j<randomWord.length; j++) {
-    //     if (randomWord[j] === userGuess) {
-    //             hiddenWord[j] = userGuess;
-            
-    //     } else {
-    //         guessedAlready.push(userGuess);
-    //         guessesRemaining--;
-    //     }
-    // }
+function checkUserGuess(userGuess) {
+    console.log(userGuess);
 
-    randomIndex = randomWord.indexOf(userGuess); 
-    console.log(randomIndex);
+    possibleIndex = possibleGuesses.indexOf(userGuess); // to ensure only letter are guessed
+    randomIndex = randomWord.indexOf(userGuess);    //ID's  >=0 means the userGuess is in the random word....-1=not
+    randomIndex2 = randomWord.lastIndexOf(userGuess); //This is b/c some of the mountain names have more then one of the same character in their string
+    guessedIndex = guessedAlready.indexOf(userGuess); //So you can't guess more than once
 
-    if (randomIndex === -1) {
-        guessesRemaining--;
-        guessedAlready.push(userGuess);
-    } 
-    if (randomIndex !== -1) {
-        hiddenWord[randomIndex]=userGuess;
+    if (possibleIndex !== -1) { //only can guess letters
+        if (randomIndex === -1) { //if wrong letter guess
+            if (guessedIndex === -1) { //
+                guessesRemaining--;
+                guessedAlready.push(userGuess);
+            }
+        }
+        if (randomIndex !== -1) {
+            hiddenWord[randomIndex] = userGuess;  //places userGuess in blank spot
+            hiddenWord[randomIndex2] = userGuess; //b/c some mountains have 2< of the same characters
+        }
     }
-    console.log(hiddenWord);
-    // attention look up isArray and indexOf stuff
 
-    document.getElementById("attempts").innerHTML = guessesRemaining;
+    document.getElementById("attempts").innerHTML = guessesRemaining; // these innerHTML's are to enter the userGuess to the html
     document.getElementById("wrongLetters").innerHTML = guessedAlready;
     document.getElementById("guessWord").innerHTML = hiddenWord.join(" ");
 }
 
+function winOrLose() {
+    checkWin = hiddenWord.includes(" _ ");
     
-
-launchGame(); 
-    
-document.onkeyup = function(event) {
-    
-    var userGuess = event.key.toLowerCase();
-      console.log('click');
-     
-    checkUserGuess(userGuess);
-    
+    if (checkWin === false) {
+        wins++;
+        alert("Your climbing " + randomWord + " today!")
+        launchGame();  
+    }
+    else if (guessesRemaining <= 0) {
+        loses++;
+        alert("No 14er for you!");
+        launchGame();  
+    }
 }
 
 
+launchGame(); // for the first launch
 
-       
+document.onkeyup = function (event) {
 
-      
+    var userGuess = event.key.toLowerCase();
+   
 
+    checkUserGuess(userGuess);
+    winOrLose();
 
+}
