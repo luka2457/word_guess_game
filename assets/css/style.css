@@ -1,0 +1,38 @@
+body, html {
+    height: 100%;
+    margin: 0;
+}
+body {
+     background: url("http://utoptens.com/wp-content/uploads/2017/04/Colorado-Mountains_sm-702x390.jpg");
+    color:#4aaaa5;
+    height:100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+
+.card {
+    max-width:960px;
+    border: 2px solid #dddddd;
+    margin-bottom: 10%;
+    opacity: 0.88;
+    margin: 0 auto;
+    margin-top: 10%;
+}
+
+footer {
+    background-color: #dddddd;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    color: #4aaaa5;
+    opacity: 0.88;
+}
+a {
+    color: #4aaaa5;
+}
